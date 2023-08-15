@@ -2,21 +2,27 @@
 #include<fcntl.h>
 #include<stdlib.h>
 #include<string.h>
+#include<unistd.h>
 
-int main() {
-	int fd = open("myFileFor4.txt", O_CREAT|O_EXCL, 0666);
+int main(int argc, char *argv[]) {
+	const char *filename = (argc > 1) ? argv[1] : ".";
+	int fd = open(filename, O_CREAT|O_EXCL, 0666);
 	if(fd == -1) {
-		printf("Failed");
-		return 1;
-	}
-	printf("File Created Exclusively");
+		printf("File already exists\n");
+		
+	} else
+		printf("File Created Exclusively\n");
 
-	fd = open("myFileFor4.txt", O_RDWR);
+	fd = open(filename, O_RDWR);
 	if(fd == -1) {
-		printf("Failed");
+		printf("Failed to open file\n");
 		return 1;
-	}
-	printf("File open in Read Write mode");
+	} else
+		printf("File open in Read Write mode\n");
+	int pid = getpid();
+        char command[100];
+        snprintf(command, sizeof(command), "%s%d%s", "ls -l /proc/", pid, "/fd");
+        system(command);
 
 	return 0;
 }
