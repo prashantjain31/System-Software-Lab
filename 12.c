@@ -20,11 +20,11 @@ int main(int argc, char *argv[]) {
 	        perror("Error getting file flags");
 	        return 1;
 	    }
-	    if (flags & O_RDONLY) printf("Read-only ");
-	    if (flags & O_WRONLY) printf("Write-only ");
-	    if (flags & O_RDWR) printf("Read-write ");
-	    if (flags & O_APPEND) printf("Append ");
-	    if (flags & O_CREAT) printf("Create ");
+	    if ((flags & O_ACCMODE) == O_RDONLY) printf("Read-only ");
+	    if ((flags & O_ACCMODE) == O_WRONLY) printf("Write-only ");
+	    if ((flags & O_ACCMODE) == O_RDWR) printf("Read-write ");
+	    if ((flags & O_ACCMODE) == O_APPEND) printf("Append ");
+	    if ((flags & O_ACCMODE) == O_CREAT) printf("Create ");
 
 	    printf("\n");
 	    close(fd);

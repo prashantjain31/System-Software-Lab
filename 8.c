@@ -14,17 +14,22 @@ int main(int argc, char *argv[]) {
 		printf("Couldn't open the files\n");
 		return 1;
 	}
-	
+	int i = 0;
+	char b;
 	char buf[1000];
 	while(1) {
-		int c = read(fd, &buf, sizeof(buf));
-		if(c == 0) break;
-		for(int i = 0; i < c; i++) {
-
-			write(1, &buf[i], 1);
-
-			if(buf[i] == '\n') write(1, &"\n", 1);
+		int c = read(fd, &b, 1);
+		if(c!=0 && b == '\n') {
+			buf[i++] = b;
+			buf[i++] = '\0';
 		}
+		else if(c!=0) {
+			buf[i++] = b;
+			continue;
+		} 
+		write(1, &buf, i);
+		i=0;
+		if(c==0) break;
 	}
 	close(fd);
 	return 0;
